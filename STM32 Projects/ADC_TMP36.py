@@ -24,7 +24,7 @@ start_time = time.time()  # Record start time
 plt.ion()  # Turn on interactive mode
 fig, ax = plt.subplots(figsize=(10, 6))
 line, = ax.plot([], [], 'b-', linewidth=2)  # Start with empty data
-ax.set_ylim(15, 50)  # Adjust temperature range as needed
+ax.set_ylim(0, 50)  # Adjust temperature range as needed
 ax.set_xlim(0, 60)  # Start with 60 seconds view
 ax.set_title("Real-Time Temperature from STM32", fontsize=14)
 ax.set_xlabel("Time (seconds since start)")
