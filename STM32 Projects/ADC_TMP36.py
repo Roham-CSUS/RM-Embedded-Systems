@@ -16,18 +16,18 @@ except serial.SerialException as e:
     exit(1)
 
 # === Data Setup ===
-MAX_POINTS = 100
-temp_data = deque([0.0] * MAX_POINTS, maxlen=MAX_POINTS)
-time_data = deque(range(MAX_POINTS), maxlen=MAX_POINTS)
+temp_data = deque()  # No maxlen - keep all data
+time_data = deque()  # No maxlen - keep all data  
+start_time = time.time()  # Record start time
 
 # === Matplotlib Setup ===
 plt.ion()  # Turn on interactive mode
 fig, ax = plt.subplots(figsize=(10, 6))
-line, = ax.plot(time_data, temp_data, 'b-', linewidth=2)
+line, = ax.plot([], [], 'b-', linewidth=2)  # Start with empty data
 ax.set_ylim(15, 50)  # Adjust temperature range as needed
-ax.set_xlim(0, MAX_POINTS)
+ax.set_xlim(0, 60)  # Start with 60 seconds view
 ax.set_title("Real-Time Temperature from STM32", fontsize=14)
-ax.set_xlabel("Time (samples)")
+ax.set_xlabel("Time (seconds since start)")
 ax.set_ylabel("Temperature (°C)")
 ax.grid(True, alpha=0.3)
 
@@ -69,9 +69,12 @@ def update(frame):
                         temp_value = float(numbers[0])
                 
                 if temp_value is not None:
+                    # Calculate time since start
+                    current_time = time.time() - start_time
+                    
                     # Update data
                     temp_data.append(temp_value)
-                    time_data.append(time_data[-1] + 1 if len(time_data) > 0 else 0)
+                    time_data.append(current_time)
                     
                     # Update plot
                     line.set_data(time_data, temp_data)
@@ -80,13 +83,14 @@ def update(frame):
                     if temp_value < ax.get_ylim()[0] or temp_value > ax.get_ylim()[1]:
                         ax.set_ylim(min(temp_data) - 2, max(temp_data) + 2)
                     
-                    # Update x-axis to show sliding window
-                    ax.set_xlim(time_data[0], time_data[-1])
+                    # Always show from 0 to current time (with some padding)
+                    if current_time > ax.get_xlim()[1] - 10:  # Add padding
+                        ax.set_xlim(0, current_time + 20)
                     
                     # Update temperature display
-                    temp_text.set_text(f'Current Temp: {temp_value:.1f}°C')
+                    temp_text.set_text(f'Current Temp: {temp_value:.1f}°C\nTime: {current_time:.1f}s')
                     
-                    print(f"Temperature: {temp_value}°C")  # Debug output
+                    print(f"Time: {current_time:.1f}s, Temperature: {temp_value:.1f}°C")  # Debug output
                 
     except serial.SerialException as e:
         print(f"Serial error: {e}")
