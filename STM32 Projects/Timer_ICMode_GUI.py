@@ -1,3 +1,5 @@
+# This code belongs to the YouTube Video "Real-Time Frequency Measurement STM32 using Input Capture Mode of Timer and Python for Data Display" at https://youtu.be/mEHG08xiqEc 
+
 import serial
 from collections import deque
 import numpy as np
