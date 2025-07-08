@@ -1,3 +1,4 @@
+# This code belongs to the Youtube video "Real-Time Temperature Monitoring with TMP36 and Nucleo32-F303K8  Python Data Logging" at https://youtu.be/LTWqGxTbHmE
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
