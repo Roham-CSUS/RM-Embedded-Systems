@@ -1,5 +1,4 @@
-# This code belongs to the YouTube Video 
-#    "Servo Control Using PWM with Interrupts with Real-Time Angle Visualization in Python" at https://youtu.be/ueq3rqgOjj0   
+# This code belongs to the YouTube Video "Servo Control Using PWM with Interrupts with Real-Time Angle Visualization in Python" at https://youtu.be/ueq3rqgOjj0   
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
